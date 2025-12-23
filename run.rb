@@ -20,7 +20,6 @@ def process_input(input_data, input_number)
 
   puts "Output #{input_number}:"
   puts receipt
-  puts
 end
 
 puts 'Sales Tax Calculator - Processing All Test Cases'

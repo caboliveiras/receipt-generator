@@ -5,10 +5,13 @@ class Item
   BASIC_TAX_RATE = 0.10
   IMPORT_TAX_RATE = 0.05
   EXEMPT_CATEGORIES = %i[book food medical].freeze
+  VALID_CATEGORIES = (EXEMPT_CATEGORIES + [:general]).freeze
 
   attr_reader :name, :price, :category, :imported, :tax_amount, :total_price
 
   def initialize(name:, price:, category:, imported: false)
+    validate_inputs(name, price, category)
+
     @name = name
     @price = price
     @category = category
@@ -43,4 +46,15 @@ class Item
 
     (amount * 20).ceil / 20.0
   end
+
+  def validate_inputs(name, price, category)
+    raise ArgumentError, 'Name cannot be empty' if name.nil? || name.to_s.strip.empty?
+    raise ArgumentError, 'Price must be positive' if price.nil? || price <= 0
+
+    return if VALID_CATEGORIES.include?(category)
+
+    raise ArgumentError,
+          "Category must be one of: #{VALID_CATEGORIES.join(', ')}"
+  end
+
 end
